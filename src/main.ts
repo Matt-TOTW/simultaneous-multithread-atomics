@@ -2,14 +2,15 @@ import './style.css';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-    <h1>Vite + TypeScript</h1>
+    <h1>Simultaneous Atomics</h1>
     <div class="card">
       <button id="goWorker1" type="button">Go worker 1</button>
       <button id="goWorker2" type="button">Go worker 2</button>
       <button id="goWorker3" type="button">Go both</button>
     </div>
     <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
+      Minimal reproduction of unexpected behaviour when using Atomics on distinct SharedArrayBuffers simultaneously.<br /><br />
+      Open the console to see the logs
     </p>
   </div>
 `;
