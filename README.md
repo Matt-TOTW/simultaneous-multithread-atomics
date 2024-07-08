@@ -1,4 +1,4 @@
-# Project Title
+# Simultaneous Multithreaded Atomics
 
 This is a minimal reproduction of unexpected behaviour when using Atomics on distinct SharedArrayBuffers simultaneously
 
