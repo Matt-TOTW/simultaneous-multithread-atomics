@@ -1,3 +1,5 @@
+// FIRST THREAD
+
 const innerWorker = new Worker(new URL('./innerWorker.ts', import.meta.url), { type: 'module' });
 
 const sharedArray = new SharedArrayBuffer(8);
@@ -16,9 +18,17 @@ const opRun = (workerNumber: number, runNumber: number) => {
   Atomics.store(typedArray, watchSlot, 1);
   Atomics.notify(typedArray, watchSlot);
 
+  // On the first run, simulate a long pause
   if (runNumber === 1) longPause();
 
+  // On the first run this will be 'not-equal' as the other thread will
+  //   have already set the result but NOT NOTIFIED YET
+  // On the second run it will be 'ok'. It will have been notified by the FIRST PASS of the other thread
   const waitResult = Atomics.wait(typedArray, resultSlot, -1);
+
+  // On the first run, this will be correct, 1
+  // On the second run, the delayed notificaiton got us past the wait,
+  //   but the other thread has not yet set the result, so it is still -1
   const result = Atomics.load(typedArray, resultSlot);
 
   if (result === -1) {

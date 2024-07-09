@@ -1,3 +1,5 @@
+// SECOND THREAD
+
 const resultSlot = 0;
 const watchSlot = 1;
 
@@ -14,12 +16,15 @@ onmessage = (event: MessageEvent<{ typedArray: Int32Array }>) => {
     const value = Atomics.load(typedArray, watchSlot);
     Atomics.store(typedArray, watchSlot, 0);
 
+    // On the second loop through, pause here so that this thread doesn't catch up
     if (iterationNumber === 2) longerPause();
 
     Atomics.store(typedArray, resultSlot, value);
 
+    // On the first run, simulate a very long pause here so that the frst thread gets ahead
     if (iterationNumber === 1) longerPause();
 
+    // This notification will fire when the first thread is waiting ON ITS SECOND RUN
     Atomics.notify(typedArray, resultSlot);
     iterationNumber++;
   }
